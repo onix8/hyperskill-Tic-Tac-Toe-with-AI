@@ -1,6 +1,8 @@
 package tictactoe;
 
+import java.util.Arrays;
 import java.util.NoSuchElementException;
+import java.util.Random;
 import java.util.Scanner;
 
 import static tictactoe.State.*;
@@ -25,30 +27,77 @@ enum State {
 
 public class Main {
 
-    static char[] field;
+    static char[] field = new char[9];
+    static int positionOnField;
     static State state = GAME_NOT_FINISHED;
 
     public static void main(String[] args) {
-        int positionOnField;
         char playerCharacter;
-        String s;
-        Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Enter cells: ");
+        Arrays.fill(field, ' ');
 
-        s = scanner.nextLine().replaceAll("_", " ");
-        field = s.toCharArray();
+        while (state == GAME_NOT_FINISHED) {
+            printField(field);
 
-        printField(field);
+            if (state == GAME_NOT_FINISHED) {
+                playerCharacter = getWhoseNextTurn();
+                switch (playerCharacter) {
+                    case 'X':
+                        positionOnField = enterXY();
+                        doMove(positionOnField, playerCharacter);
+                        break;
+                    case 'O':
+                        moveEasy(playerCharacter);
+                }
+                updateState();
+            }
 
-        positionOnField = enterXY();
-        playerCharacter = getWhoseNextTurn();
+            if (state != GAME_NOT_FINISHED) {
+                printField(field);
+                System.out.println(state.getStateDescription());
+            }
+        }
+    }
+
+    /**
+     * The "easy" AI makes a random move.
+     *
+     * @param playerCharacter sets the character that the AI will use.
+     */
+    private static void moveEasy(char playerCharacter) {
+        System.out.println("Making move level \"easy\"");
+        positionOnField = generateRandomEmptyPositionOnField();
         doMove(positionOnField, playerCharacter);
+    }
 
-        printField(field);
+    /**
+     * Selects a random free field.
+     *
+     * @return empty position on the field.
+     */
+    private static int generateRandomEmptyPositionOnField() {
+        int[] indexesEmptyPositions = indexesPositions(' ');
+        Random randomIndex = new Random();
+        return indexesEmptyPositions[randomIndex.nextInt(indexesEmptyPositions.length)];
+    }
 
-        updateState();
-        System.out.println(state.getStateDescription());
+    /**
+     * Searches for all addresses of a specific character in the field.
+     *
+     * @param c the desired symbol.
+     * @return array of indexes of the desired character in the field.
+     */
+    private static int[] indexesPositions(char c) {
+        int countPosition = count(c);
+        int[] indexes = new int[countPosition];
+
+        for (int i = 0, j = 0; j < countPosition; i++) {
+            if (field[i] == c) {
+                indexes[j++] = i;
+            }
+        }
+
+        return indexes;
     }
 
     /**
@@ -269,11 +318,9 @@ public class Main {
 
     /**
      * Calculates whose next move is.
-     *
      * @return character player's.
      */
     private static char getWhoseNextTurn() {
         return count('X') == count('O') ? 'X' : 'O';
     }
 }
-
