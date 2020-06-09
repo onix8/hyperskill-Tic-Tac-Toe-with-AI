@@ -2,6 +2,9 @@ package tictactoe;
 
 import java.util.Scanner;
 
+import static tictactoe.VariantCommands.*;
+import static tictactoe.VariantPlayers.findPlayer;
+
 class UserCommand {
     private boolean badParameters = true;
     private VariantCommands command;
@@ -30,37 +33,40 @@ class UserCommand {
         int countCommand = userInput.length;
         switch (countCommand) {
             case 1:
-                if (VariantCommands.EXIT.getCommand().equals(userInput[0])) {
-                    command = VariantCommands.findCommand(userInput[0]);
-                    badParameters = false;
-                }
-                break;
+                command = findCommand(userInput[0]);
+                badParameters = command != EXIT;
+                return;
             case 3:
-                if (VariantCommands.START.getCommand().equals(userInput[0])) {
-                    command = VariantCommands.findCommand(userInput[0]);
+                command = findCommand(userInput[0]);
+                if (command == START) {
                     badParameters = false;
                 } else {
+                    badParameters = true;
                     return;
                 }
 
-                if (VariantPlayers.USER.getPlayer().equals(userInput[1])) {
-                    firstPlayer = VariantPlayers.findPlayer(userInput[1]);
-                    badParameters = false;
-                } else if (VariantPlayers.EASY.getPlayer().equals(userInput[1])) {
-                    firstPlayer = VariantPlayers.findPlayer(userInput[1]);
-                    badParameters = false;
-                } else {
-                    badParameters = true;
+                firstPlayer = findPlayer(userInput[1]);
+                switch (firstPlayer) {
+                    case USER:
+                    case EASY:
+                    case MEDIUM:
+                        badParameters = false;
+                        break;
+                    default:
+                        badParameters = true;
+                        return;
                 }
 
-                if (VariantPlayers.USER.getPlayer().equals(userInput[2])) {
-                    secondPlayer = VariantPlayers.findPlayer(userInput[2]);
-                    badParameters = false;
-                } else if (VariantPlayers.EASY.getPlayer().equals(userInput[2])) {
-                    secondPlayer = VariantPlayers.findPlayer(userInput[2]);
-                    badParameters = false;
-                } else {
-                    badParameters = true;
+                secondPlayer = findPlayer(userInput[2]);
+                switch (secondPlayer) {
+                    case USER:
+                    case EASY:
+                    case MEDIUM:
+                        badParameters = false;
+                        break;
+                    default:
+                        badParameters = true;
+                        return;
                 }
                 break;
             default:

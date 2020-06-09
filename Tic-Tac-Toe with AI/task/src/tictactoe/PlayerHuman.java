@@ -8,10 +8,15 @@ public class PlayerHuman extends Player {
         super(player);
     }
 
+    /**
+     * Moves along the coordinates entered by the user.
+     *
+     * @param field playing field.
+     */
     @Override
-    public void doMove(Field field, char playerCharacter) {
+    public void doMove(Field field) {
         int positionOnField = enterXY(field);
-        move(field, positionOnField, playerCharacter);
+        move(field, positionOnField);
     }
 
     /**
@@ -26,7 +31,7 @@ public class PlayerHuman extends Player {
         int positionOnField = 0;
         boolean invalidCoordinates = true;
         String userInput = "";
-        char[] f = field.getField();
+        FieldCharacter[] f = field.getField();
         Scanner scannerSystemIn = new Scanner(System.in);
         Scanner scannerUserInput;
 
@@ -57,8 +62,8 @@ public class PlayerHuman extends Player {
             }
 
             switch (f[positionOnField]) {
-                case 'X':
-                case 'O':
+                case X:
+                case O:
                     System.out.println("This cell is occupied! Choose another one!");
                     invalidCoordinates = true;
                     continue;

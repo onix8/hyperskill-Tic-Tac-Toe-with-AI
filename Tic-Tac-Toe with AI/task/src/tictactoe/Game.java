@@ -1,8 +1,8 @@
 package tictactoe;
 
+import static tictactoe.FieldCharacter.*;
 import static tictactoe.State.*;
-import static tictactoe.VariantPlayers.EASY;
-import static tictactoe.VariantPlayers.USER;
+import static tictactoe.VariantPlayers.*;
 
 class Game {
     Field field = null;
@@ -38,14 +38,20 @@ class Game {
                             firstPlayer = new PlayerHuman(USER);
                             break;
                         case EASY:
-                            firstPlayer = new PlayerAI(EASY);
+                            firstPlayer = new PlayerAIEasy(EASY);
+                            break;
+                        case MEDIUM:
+                            firstPlayer = new PlayerAIMedium(MEDIUM);
                     }
                     switch (secondVariantPlayers) {
                         case USER:
                             secondPlayer = new PlayerHuman(USER);
                             break;
                         case EASY:
-                            secondPlayer = new PlayerAI(EASY);
+                            secondPlayer = new PlayerAIEasy(EASY);
+                            break;
+                        case MEDIUM:
+                            secondPlayer = new PlayerAIMedium(MEDIUM);
                     }
                     startBattle(firstPlayer, secondPlayer);
                     break;
@@ -62,39 +68,29 @@ class Game {
      * @param secondPlayer AI or user (enum VariantPlayers).
      */
     private void startBattle(Player firstPlayer, Player secondPlayer) {
-        char playerCharacter;
         field = new Field();
         updateState();
 
         while (state == GAME_NOT_FINISHED) {
-            field.printField();
+            System.out.println(field);
 
             if (state == GAME_NOT_FINISHED) {
-                playerCharacter = getWhoseNextTurn();
-                switch (playerCharacter) {
-                    case 'X':
-                        firstPlayer.doMove(field, playerCharacter);
+                field.setNextMove();
+                switch (field.getNextMove()) {
+                    case X:
+                        firstPlayer.doMove(field);
                         break;
-                    case 'O':
-                        secondPlayer.doMove(field, playerCharacter);
+                    case O:
+                        secondPlayer.doMove(field);
                 }
                 updateState();
             }
 
             if (state != GAME_NOT_FINISHED) {
-                field.printField();
-                System.out.println(state.getStateDescription());
+                System.out.println(field);
+                System.out.println(state);
             }
         }
-    }
-
-    /**
-     * Calculates whose next move is.
-     *
-     * @return character player's.
-     */
-    private char getWhoseNextTurn() {
-        return field.count('X') == field.count('O') ? 'X' : 'O';
     }
 
     /**
@@ -112,7 +108,7 @@ class Game {
      * "Game not finished"
      */
     private boolean isNotFinish() {
-        return field.count(' ') > 0 &&
+        return field.count(SPACE) > 0 &&
                 !isWinsX() &&
                 !isWinsO() &&
                 !isImpossible();
@@ -122,7 +118,7 @@ class Game {
      * "Draw"
      */
     private boolean isDraw() {
-        return field.count(' ') == 0 &&
+        return field.count(SPACE) == 0 &&
                 !isWinsX() &&
                 !isWinsO() &&
                 !isImpossible();
@@ -132,24 +128,24 @@ class Game {
      * "X wins"
      */
     private boolean isWinsX() {
-        return !isImpossible() && isWin('X');
+        return isWin(X);
     }
 
     /**
      * "O wins"
      */
     private boolean isWinsO() {
-        return !isImpossible() && isWin('O');
+        return isWin(O);
     }
 
     /**
      * "Impossible"
      */
     private boolean isImpossible() {
-        int x = field.count('X');
-        int o = field.count('O');
+        int x = field.count(X);
+        int o = field.count(O);
 
-        if (isWin('X') && isWin('O')) {
+        if (isWin(X) && isWin(O)) {
             return true;
         } else {
             return x >= o ?
@@ -165,15 +161,7 @@ class Game {
      * @param c player 'X' or 'O'.
      * @return true if there are three in a row.
      */
-    private boolean isWin(char c) {
-        char[] f = this.field.getField();
-        return (f[0] == c && f[1] == c && f[2] == c) ||
-                (f[3] == c && f[4] == c && f[5] == c) ||
-                (f[6] == c && f[7] == c && f[8] == c) ||
-                (f[0] == c && f[3] == c && f[6] == c) ||
-                (f[1] == c && f[4] == c && f[7] == c) ||
-                (f[2] == c && f[5] == c && f[8] == c) ||
-                (f[0] == c && f[4] == c && f[8] == c) ||
-                (f[2] == c && f[4] == c && f[6] == c);
+    private boolean isWin(FieldCharacter c) {
+        return field.findThreeInARow(c);
     }
 }

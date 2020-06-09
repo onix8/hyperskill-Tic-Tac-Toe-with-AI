@@ -2,7 +2,9 @@ package tictactoe;
 
 enum VariantPlayers {
     USER("user"),
-    EASY("easy");
+    EASY("easy"),
+    MEDIUM("medium"),
+    ERROR("Error: the wrong player was entered.");
 
     private final String player;
 
@@ -10,16 +12,23 @@ enum VariantPlayers {
         this.player = player;
     }
 
+    /**
+     * Finds the player type by its header.
+     *
+     * @param variantPlayers the player header.
+     * @return the player type.
+     */
     static VariantPlayers findPlayer(String variantPlayers) {
         for (VariantPlayers value : values()) {
             if (variantPlayers.equals(value.player)) {
                 return value;
             }
         }
-        return null;
+        return ERROR;
     }
 
-    public String getPlayer() {
+    @Override
+    public String toString() {
         return player;
     }
 }

@@ -13,7 +13,8 @@ enum State {
         this.stateDescription = stateDescription;
     }
 
-    public String getStateDescription() {
+    @Override
+    public String toString() {
         return stateDescription;
     }
 }

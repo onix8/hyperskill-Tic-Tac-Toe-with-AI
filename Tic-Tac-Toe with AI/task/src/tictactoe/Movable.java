@@ -1,17 +1,21 @@
 package tictactoe;
 
 public interface Movable {
-    void doMove(Field field, char playerCharacter);
+    /**
+     * The move depends on the type of specific player.
+     *
+     * @param field playing field.
+     */
+    void doMove(Field field);
 
     /**
      * Records the player's move on the field.
      *
      * @param field           playing field.
      * @param positionOnField address of a field cell.
-     * @param playerCharacter player 'X' or 'O'.
      */
-    default void move(Field field, int positionOnField, char playerCharacter) {
-        char[] f = field.getField();
-        f[positionOnField] = playerCharacter;
+    default void move(Field field, int positionOnField) {
+        FieldCharacter[] f = field.getField();
+        f[positionOnField] = field.getNextMove();
     }
 }
