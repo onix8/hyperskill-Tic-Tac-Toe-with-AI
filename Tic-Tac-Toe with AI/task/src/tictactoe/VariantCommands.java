@@ -1,5 +1,8 @@
 package tictactoe;
 
+/**
+ * All possible variants of user commands.
+ */
 enum VariantCommands {
     START("start"),
     EXIT("exit"),

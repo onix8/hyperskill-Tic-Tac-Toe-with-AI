@@ -1,5 +1,8 @@
 package tictactoe;
 
+/**
+ * They can make a move.
+ */
 public interface Movable {
     /**
      * The move depends on the type of specific player.

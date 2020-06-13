@@ -1,9 +1,13 @@
 package tictactoe;
 
+/**
+ * All possible options of the players.
+ */
 enum VariantPlayers {
     USER("user"),
     EASY("easy"),
     MEDIUM("medium"),
+    HARD("hard"),
     ERROR("Error: the wrong player was entered.");
 
     private final String player;

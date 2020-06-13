@@ -1,5 +1,8 @@
 package tictactoe;
 
+/**
+ * All possible States of the game.
+ */
 enum State {
     GAME_NOT_FINISHED("Game not finished"),
     DRAW("Draw"),

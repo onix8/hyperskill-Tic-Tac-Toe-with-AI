@@ -5,29 +5,35 @@ import java.util.Scanner;
 import static tictactoe.VariantCommands.*;
 import static tictactoe.VariantPlayers.findPlayer;
 
+/**
+ * User's command.
+ */
 class UserCommand {
     private boolean badParameters = true;
     private VariantCommands command;
     private VariantPlayers firstPlayer;
     private VariantPlayers secondPlayer;
 
-    public boolean isBadParameters() {
+    boolean isBadParameters() {
         return badParameters;
     }
 
-    public VariantCommands getCommand() {
+    VariantCommands getCommand() {
         return command;
     }
 
-    public VariantPlayers getFirstPlayer() {
+    VariantPlayers getFirstPlayer() {
         return firstPlayer;
     }
 
-    public VariantPlayers getSecondPlayer() {
+    VariantPlayers getSecondPlayer() {
         return secondPlayer;
     }
 
-    public void checkedInput() {
+    /**
+     * Entering and verifying the user's command.
+     */
+    void checkedInput() {
         Scanner scanner = new Scanner(System.in);
         String[] userInput = scanner.nextLine().split("\\s+");
         int countCommand = userInput.length;
@@ -50,6 +56,7 @@ class UserCommand {
                     case USER:
                     case EASY:
                     case MEDIUM:
+                    case HARD:
                         badParameters = false;
                         break;
                     default:
@@ -62,6 +69,7 @@ class UserCommand {
                     case USER:
                     case EASY:
                     case MEDIUM:
+                    case HARD:
                         badParameters = false;
                         break;
                     default:

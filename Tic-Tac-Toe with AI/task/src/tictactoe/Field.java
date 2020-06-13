@@ -5,26 +5,19 @@ import java.util.Random;
 
 import static tictactoe.FieldCharacter.*;
 
+/**
+ * TIC-TAC-toe 3x3 playing field
+ */
 class Field {
     private final FieldCharacter[] field = new FieldCharacter[9];
     private FieldCharacter nextMove;
 
-    public Field() {
-        Arrays.fill(field, SPACE);
-    }
-
     /**
-     * Outputs the formatted content of the field.
+     * Creates an empty playing field.
+     *
      */
-    @Override
-    public String toString() {
-        StringBuilder output = new StringBuilder();
-        output.append("---------\n")
-                .append("| ").append(field[0]).append(" ").append(field[1]).append(" ").append(field[2]).append(" |\n")
-                .append("| ").append(field[3]).append(" ").append(field[4]).append(" ").append(field[5]).append(" |\n")
-                .append("| ").append(field[6]).append(" ").append(field[7]).append(" ").append(field[8]).append(" |\n")
-                .append("---------\n");
-        return String.valueOf(output);
+    Field() {
+        Arrays.fill(field, SPACE);
     }
 
     /**
@@ -49,23 +42,95 @@ class Field {
      * @return empty position on the field.
      */
     int generateRandomEmptyPositionOnField() {
-        int[] indexesEmptyPositions = indexesPositions(SPACE);
+        int[] indexesEmptyPositions = indexesSpacePositions();
         Random randomIndex = new Random();
         return indexesEmptyPositions[randomIndex.nextInt(indexesEmptyPositions.length)];
     }
 
     /**
-     * Searches for all addresses of a specific character in the field.
+     * Calculates the best possible move.
      *
-     * @param character search symbol.
+     * @return the index of the best move on the field.
+     */
+    int bestMove() {
+        int score;
+        int maxScores = Integer.MIN_VALUE;
+        int bestIndex = -1;
+
+        for (int indexSpacePositions : indexesSpacePositions()) {
+            field[indexSpacePositions] = nextMove;
+            setNextMove();
+            score = minimax(false);
+            field[indexSpacePositions] = SPACE;
+            setNextMove();
+            if (score > maxScores) {
+                maxScores = score;
+                bestIndex = indexSpacePositions;
+            }
+        }
+
+        return bestIndex;
+    }
+
+    /**
+     * Implementation of the minimax algorithm.
+     *
+     * @param isMaximizing determines whose turn it is.
+     * @return <code>10</code>, — if the move leads to a victory.<p>
+     * <code>-10</code>, — if the move results in a loss.<p>
+     * <code>0</code>, — if the move results in a draw.
+     */
+    private int minimax(boolean isMaximizing) {
+        int score;
+        int bestScore;
+        if (findThreeInARow(nextMove == X ? O : X)) {
+            return isMaximizing ? -10 : 10;
+        } else if (findThreeInARow(nextMove)) {
+            return isMaximizing ? 10 : -10;
+        } else if (count(SPACE) == 0
+                && !findThreeInARow(X)
+                && !findThreeInARow(O)) {
+            return 0;
+        } else if (isMaximizing) {
+            bestScore = Integer.MIN_VALUE;
+
+            for (int indexSpacePositions : indexesSpacePositions()) {
+                field[indexSpacePositions] = nextMove;
+                setNextMove();
+                score = minimax(false);
+                field[indexSpacePositions] = SPACE;
+                setNextMove();
+                bestScore = Math.max(score, bestScore);
+            }
+
+            return bestScore;
+        } else {
+            bestScore = Integer.MAX_VALUE;
+
+            for (int indexSpacePositions : indexesSpacePositions()) {
+                field[indexSpacePositions] = nextMove;
+                setNextMove();
+                score = minimax(true);
+                field[indexSpacePositions] = SPACE;
+                setNextMove();
+                bestScore = Math.min(score, bestScore);
+            }
+
+            return bestScore;
+        }
+    }
+
+    /**
+     * Searches for all addresses of space character in the field.
+     *
      * @return array of indexes of the desired character in the field.
      */
-    private int[] indexesPositions(FieldCharacter character) {
-        int countPosition = count(character);
+    private int[] indexesSpacePositions() {
+        int countPosition = count(SPACE);
         int[] indexes = new int[countPosition];
 
         for (int i = 0, j = 0; j < countPosition; i++) {
-            if (field[i] == character) {
+            if (field[i] == SPACE) {
                 indexes[j++] = i;
             }
         }
@@ -146,6 +211,20 @@ class Field {
 
     FieldCharacter[] getField() {
         return field;
+    }
+
+    /**
+     * Outputs the formatted content of the field.
+     */
+    @Override
+    public String toString() {
+        StringBuilder output = new StringBuilder();
+        output.append("---------\n")
+                .append("| ").append(field[0]).append(" ").append(field[1]).append(" ").append(field[2]).append(" |\n")
+                .append("| ").append(field[3]).append(" ").append(field[4]).append(" ").append(field[5]).append(" |\n")
+                .append("| ").append(field[6]).append(" ").append(field[7]).append(" ").append(field[8]).append(" |\n")
+                .append("---------\n");
+        return String.valueOf(output);
     }
 
     /**

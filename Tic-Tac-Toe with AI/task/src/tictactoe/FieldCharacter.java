@@ -1,5 +1,8 @@
 package tictactoe;
 
+/**
+ * All possible symbols of the playing field.
+ */
 public enum FieldCharacter {
     X('X'),
     O('O'),

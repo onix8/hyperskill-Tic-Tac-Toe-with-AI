@@ -3,8 +3,11 @@ package tictactoe;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+/**
+ * The human player.
+ */
 public class PlayerHuman extends Player {
-    public PlayerHuman(VariantPlayers player) {
+    PlayerHuman(VariantPlayers player) {
         super(player);
     }
 

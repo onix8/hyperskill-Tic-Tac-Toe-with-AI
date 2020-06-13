@@ -4,6 +4,9 @@ import static tictactoe.FieldCharacter.*;
 import static tictactoe.State.*;
 import static tictactoe.VariantPlayers.*;
 
+/**
+ * Game "Tic-Tac-Toe with AI".
+ */
 class Game {
     Field field = null;
     Player firstPlayer = null;
@@ -12,8 +15,9 @@ class Game {
 
     /**
      * Controls the creation and exit of the game.
+     *
      */
-    public void startGame() {
+    void startGame() {
         boolean play = true;
         VariantCommands variantCommands;
         VariantPlayers firstVariantPlayers;
@@ -42,6 +46,9 @@ class Game {
                             break;
                         case MEDIUM:
                             firstPlayer = new PlayerAIMedium(MEDIUM);
+                            break;
+                        case HARD:
+                            firstPlayer = new PlayerAIHard(HARD);
                     }
                     switch (secondVariantPlayers) {
                         case USER:
@@ -52,6 +59,9 @@ class Game {
                             break;
                         case MEDIUM:
                             secondPlayer = new PlayerAIMedium(MEDIUM);
+                            break;
+                        case HARD:
+                            secondPlayer = new PlayerAIHard(HARD);
                     }
                     startBattle(firstPlayer, secondPlayer);
                     break;
@@ -95,6 +105,7 @@ class Game {
 
     /**
      * Analyzes the state of the field.
+     *
      */
     private void updateState() {
         state = isNotFinish() ? GAME_NOT_FINISHED :
@@ -106,6 +117,7 @@ class Game {
 
     /**
      * "Game not finished"
+     *
      */
     private boolean isNotFinish() {
         return field.count(SPACE) > 0 &&
@@ -116,6 +128,7 @@ class Game {
 
     /**
      * "Draw"
+     *
      */
     private boolean isDraw() {
         return field.count(SPACE) == 0 &&
@@ -126,6 +139,7 @@ class Game {
 
     /**
      * "X wins"
+     *
      */
     private boolean isWinsX() {
         return isWin(X);
@@ -133,6 +147,7 @@ class Game {
 
     /**
      * "O wins"
+     *
      */
     private boolean isWinsO() {
         return isWin(O);
@@ -140,6 +155,7 @@ class Game {
 
     /**
      * "Impossible"
+     *
      */
     private boolean isImpossible() {
         int x = field.count(X);

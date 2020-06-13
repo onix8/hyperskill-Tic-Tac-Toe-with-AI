@@ -1,9 +1,12 @@
 package tictactoe;
 
+/**
+ * Abstract player.
+ */
 abstract class Player implements Movable {
     VariantPlayers player;
 
-    public Player(VariantPlayers player) {
+    Player(VariantPlayers player) {
         this.player = player;
     }
 }

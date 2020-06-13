@@ -1,7 +1,10 @@
 package tictactoe;
 
+/**
+ * AI-easy complexity.
+ */
 public class PlayerAIEasy extends Player {
-    public PlayerAIEasy(VariantPlayers player) {
+    PlayerAIEasy(VariantPlayers player) {
         super(player);
     }
 
