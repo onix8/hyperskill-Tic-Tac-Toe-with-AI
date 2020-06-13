@@ -2,7 +2,6 @@ package tictactoe;
 
 import static tictactoe.FieldCharacter.*;
 import static tictactoe.State.*;
-import static tictactoe.VariantPlayers.*;
 
 /**
  * Game "Tic-Tac-Toe with AI".
@@ -39,29 +38,29 @@ class Game {
                 case START:
                     switch (firstVariantPlayers) {
                         case USER:
-                            firstPlayer = new PlayerHuman(USER);
+                            firstPlayer = new PlayerHuman();
                             break;
                         case EASY:
-                            firstPlayer = new PlayerAIEasy(EASY);
+                            firstPlayer = new PlayerAIEasy();
                             break;
                         case MEDIUM:
-                            firstPlayer = new PlayerAIMedium(MEDIUM);
+                            firstPlayer = new PlayerAIMedium();
                             break;
                         case HARD:
-                            firstPlayer = new PlayerAIHard(HARD);
+                            firstPlayer = new PlayerAIHard();
                     }
                     switch (secondVariantPlayers) {
                         case USER:
-                            secondPlayer = new PlayerHuman(USER);
+                            secondPlayer = new PlayerHuman();
                             break;
                         case EASY:
-                            secondPlayer = new PlayerAIEasy(EASY);
+                            secondPlayer = new PlayerAIEasy();
                             break;
                         case MEDIUM:
-                            secondPlayer = new PlayerAIMedium(MEDIUM);
+                            secondPlayer = new PlayerAIMedium();
                             break;
                         case HARD:
-                            secondPlayer = new PlayerAIHard(HARD);
+                            secondPlayer = new PlayerAIHard();
                     }
                     startBattle(firstPlayer, secondPlayer);
                     break;

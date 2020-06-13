@@ -4,8 +4,8 @@ package tictactoe;
  * AI-hard complexity.
  */
 public class PlayerAIHard extends Player {
-    PlayerAIHard(VariantPlayers player) {
-        super(player);
+    PlayerAIHard() {
+        super(VariantPlayers.HARD);
     }
 
     /**

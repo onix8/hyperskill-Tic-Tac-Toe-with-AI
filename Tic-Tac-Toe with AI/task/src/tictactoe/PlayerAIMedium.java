@@ -7,8 +7,8 @@ import static tictactoe.FieldCharacter.X;
  * AI-medium complexity.
  */
 public class PlayerAIMedium extends Player {
-    PlayerAIMedium(VariantPlayers player) {
-        super(player);
+    PlayerAIMedium() {
+        super(VariantPlayers.MEDIUM);
     }
 
     /**

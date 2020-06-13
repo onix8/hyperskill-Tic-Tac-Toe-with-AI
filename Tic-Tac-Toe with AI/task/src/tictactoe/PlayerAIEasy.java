@@ -4,8 +4,8 @@ package tictactoe;
  * AI-easy complexity.
  */
 public class PlayerAIEasy extends Player {
-    PlayerAIEasy(VariantPlayers player) {
-        super(player);
+    PlayerAIEasy() {
+        super(VariantPlayers.EASY);
     }
 
     /**

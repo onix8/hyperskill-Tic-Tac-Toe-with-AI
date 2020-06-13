@@ -7,8 +7,8 @@ import java.util.Scanner;
  * The human player.
  */
 public class PlayerHuman extends Player {
-    PlayerHuman(VariantPlayers player) {
-        super(player);
+    PlayerHuman() {
+        super(VariantPlayers.USER);
     }
 
     /**
